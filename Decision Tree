@@ -1,0 +1,21 @@
+library(dplyr)
+
+install.packages("party")
+library(party)
+
+ARMAK <- read.csv("ARMDataset.csv")
+
+View(ARMAK)
+
+str(ARMAK)
+
+ARMAK$Pollutant.Name <- as.factor(ARMAK$Pollutant.Name)
+ARMAK$County <- as.factor(ARMAK$County)
+ARMAK$State <- as.factor(ARMAK$State)
+
+set.seed(1234)
+pd <- sample(2, nrow(ARMAK), replace = TRUE, prob = c(0.8,0.2))
+
+train <- ARMAK[pd == 1,]
+
+ARMAK_tree <- ctree(Pollutant.Name ~ State  + County, data =train)
